@@ -5,26 +5,14 @@ import java.nio.ByteBuffer;
 /**
  * Created by bruceyuan on 17-8-12.
  */
-public class U2 {
-    private byte[] data;
-    private int value;
-
+public class U2 extends UBase{
     public U2(byte[] data) {
-        if (data != null && data.length != 2){
-            throw new RuntimeException();
-        }
-        this.data = data;
-        this.value = ByteBuffer.wrap(data).getChar();
+        super(data, 2);
     }
 
-    public int getValue(){
-        //Byte.toUnsignedInt(data)
-        return value;
+    @Override
+    public long read(byte[] data) {
+        return ByteBuffer.wrap(data).getChar();
     }
-
-    public String toHexString(){
-        return Integer.toHexString(value);
-    }
-
 }
 

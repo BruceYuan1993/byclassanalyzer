@@ -5,24 +5,13 @@ import java.nio.ByteBuffer;
 /**
  * Created by bruceyuan on 17-8-15.
  */
-public class U8 {
-    private byte[] data;
-    private long value;
-
+public class U8 extends UBase{
     public U8(byte[] data) {
-        if (data != null && data.length != 8){
-            throw new RuntimeException();
-        }
-        this.data = data;
-        this.value = ByteBuffer.wrap(data).getLong();
+        super(data, 4);
     }
 
-    public long getValue(){
-        return value;
+    @Override
+    public long read(byte[] data) {
+        return ByteBuffer.wrap(data).getLong();
     }
-
-    public String toHexString(){
-        return Long.toHexString(value);
-    }
-
 }

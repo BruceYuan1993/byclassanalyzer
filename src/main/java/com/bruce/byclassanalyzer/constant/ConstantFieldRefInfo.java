@@ -10,6 +10,6 @@ public class ConstantFieldRefInfo extends ConstantMemberRefInfo{
 	}
 
 	public ConstantFieldRefInfo() {
-		this.tag = ConstantInfo.CONSTANT_FIELDREF_INFO;
+
 	}
 }

@@ -1,10 +1,13 @@
 package com.bruce.byclassanalyzer.constant;
 
+import com.bruce.byclassanalyzer.ClassMember;
 import com.bruce.byclassanalyzer.U1;
 import com.bruce.byclassanalyzer.U2;
 
 public class ConstantMethodHandleInfo extends ConstantInfo{
+	@ClassMember(index = 2)
 	private U1 referenceKind;
+	@ClassMember(index = 3)
 	private U2 referenceIndex;
 
 	public ConstantMethodHandleInfo(U1 referenceKind, U2 referenceIndex) {
@@ -14,7 +17,7 @@ public class ConstantMethodHandleInfo extends ConstantInfo{
 	}
 	
 	public ConstantMethodHandleInfo() {
-		this.tag = ConstantInfo.CONSTANT_METHODHANDLE_INFO;
+
 	}
 
 	public U1 getReferenceKind() {

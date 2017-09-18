@@ -2,6 +2,7 @@ package com.bruce.byclassanalyzer.constant;
 
 import com.bruce.byclassanalyzer.ClassElement;
 import com.bruce.byclassanalyzer.ClassMember;
+import com.bruce.byclassanalyzer.U1;
 
 public abstract class ConstantInfo extends ClassElement{
     public static final int CONSTANT_UTF8_INFO = 1;
@@ -30,13 +31,13 @@ public abstract class ConstantInfo extends ClassElement{
     public static final int ACC_ENUM = 0x4000;
 
     @ClassMember(index = 1)
-    protected int tag;
+    protected U1 tag;
 
-    public int getTag() {
+    public U1 getTag() {
         return tag;
     }
 
-    public void setTag(int tag) {
+    public void setTag(U1 tag) {
         this.tag = tag;
     }
 

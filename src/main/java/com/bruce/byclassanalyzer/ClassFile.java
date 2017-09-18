@@ -33,6 +33,6 @@ public class ClassFile extends ClassElement{
     private U2 cpCount;
 
     @ClassMember(index = 3)
-    private Table<ConstantInfo> constantPool;
+    public Table<ConstantInfo> constantPool;
 
 }

@@ -1,16 +1,28 @@
 package com.bruce.byclassanalyzer.constant;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
+import com.bruce.byclassanalyzer.ClassMember;
 import com.bruce.byclassanalyzer.U2;
 
 public class ConstantUtf8Info extends ConstantInfo{
+	@ClassMember(index = 2)
 	private U2 length;
+	@ClassMember(index = 3)
 	private byte[] data;
 	private String value;
-	
-	
-	
+
+	@Override
+	public String toString() {
+		try {
+			return new String(decodeMUtf8(data), "utf8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public ConstantUtf8Info(U2 length, byte[] data) {
 		this();
 		this.length = length;
@@ -23,7 +35,7 @@ public class ConstantUtf8Info extends ConstantInfo{
 	}
 	
 	public ConstantUtf8Info() {
-		this.tag = ConstantInfo.CONSTANT_UTF8_INFO;
+
 	}
 	
 	public String getValue(){

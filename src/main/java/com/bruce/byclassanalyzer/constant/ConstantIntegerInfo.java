@@ -1,8 +1,10 @@
 package com.bruce.byclassanalyzer.constant;
 
+import com.bruce.byclassanalyzer.ClassMember;
 import com.bruce.byclassanalyzer.U4;
 
 public class ConstantIntegerInfo extends ConstantInfo{
+	@ClassMember(index = 2)
 	private U4 data;
 
 	public ConstantIntegerInfo(U4 data) {
@@ -10,7 +12,7 @@ public class ConstantIntegerInfo extends ConstantInfo{
 		this.data = data;
 	}
 	public ConstantIntegerInfo() {
-		this.tag = ConstantInfo.CONSTANT_INTEGER_INFO;
+
 	}
 	
 	public long getValue(){

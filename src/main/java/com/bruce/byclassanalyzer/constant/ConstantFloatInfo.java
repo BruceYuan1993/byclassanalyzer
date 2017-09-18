@@ -1,8 +1,10 @@
 package com.bruce.byclassanalyzer.constant;
 
+import com.bruce.byclassanalyzer.ClassMember;
 import com.bruce.byclassanalyzer.U4;
 
 public class ConstantFloatInfo extends ConstantInfo{
+	@ClassMember(index = 2)
 	private U4 data;
 
 	public ConstantFloatInfo(U4 data) {
@@ -10,7 +12,7 @@ public class ConstantFloatInfo extends ConstantInfo{
 		this.data = data;
 	}
 	public ConstantFloatInfo() {
-		this.tag = ConstantInfo.CONSTANT_FLOAT_INFO;
+
 	}
 	
 	public double getValue(){

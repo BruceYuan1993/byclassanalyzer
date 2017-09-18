@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
  */
 public class U8 extends UBase{
     public U8(byte[] data) {
-        super(data, 4);
+        super(data, 8);
     }
 
     @Override

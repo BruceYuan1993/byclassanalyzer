@@ -1,8 +1,10 @@
 package com.bruce.byclassanalyzer.constant;
 
+import com.bruce.byclassanalyzer.ClassMember;
 import com.bruce.byclassanalyzer.U2;
 
 public class ConstantStringInfo extends ConstantInfo{
+	@ClassMember(index = 2)
 	private U2 nameIndex;
 	
 	public ConstantStringInfo(U2 nameIndex) {
@@ -11,7 +13,7 @@ public class ConstantStringInfo extends ConstantInfo{
 	}
 
 	public ConstantStringInfo() {
-		this.tag = ConstantInfo.CONSTANT_STRING_INFO;
+
 	}
 
 	public U2 getNameIndex() {

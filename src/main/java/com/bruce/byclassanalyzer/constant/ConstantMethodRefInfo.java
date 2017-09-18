@@ -10,6 +10,6 @@ public class ConstantMethodRefInfo extends ConstantMemberRefInfo{
 	}
 
 	public ConstantMethodRefInfo() {
-		this.tag = ConstantInfo.CONSTANT_METHODREF_INFO;
+
 	}
 }

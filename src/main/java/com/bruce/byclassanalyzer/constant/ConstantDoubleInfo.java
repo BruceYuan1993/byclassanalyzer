@@ -1,8 +1,10 @@
 package com.bruce.byclassanalyzer.constant;
 
+import com.bruce.byclassanalyzer.ClassMember;
 import com.bruce.byclassanalyzer.U8;
 
 public class ConstantDoubleInfo extends ConstantInfo{
+	@ClassMember(index = 2)
 	private U8 data;
 
 	public ConstantDoubleInfo(U8 data) {
@@ -11,7 +13,7 @@ public class ConstantDoubleInfo extends ConstantInfo{
 	}
 	
 	public ConstantDoubleInfo() {
-		this.tag = ConstantInfo.CONSTANT_DOUBLE_INFO;
+		
 	}
 	
 	public double getValue(){

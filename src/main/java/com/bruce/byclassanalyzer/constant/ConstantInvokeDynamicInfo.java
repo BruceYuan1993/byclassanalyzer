@@ -1,9 +1,12 @@
 package com.bruce.byclassanalyzer.constant;
 
+import com.bruce.byclassanalyzer.ClassMember;
 import com.bruce.byclassanalyzer.U2;
 
 public class ConstantInvokeDynamicInfo extends ConstantInfo{
+	@ClassMember(index = 2)
 	U2 bootstrapMethodAttrIndex;
+	@ClassMember(index = 3)
 	U2 nameAndTypeIndex;
 	
 	public ConstantInvokeDynamicInfo(U2 bootstrapMethodAttrIndex, U2 nameAndValueIndex) {
@@ -13,7 +16,7 @@ public class ConstantInvokeDynamicInfo extends ConstantInfo{
 	}
 
 	public ConstantInvokeDynamicInfo() {
-		this.tag = ConstantInfo.CONSTANT_INVOKEDYNAMIC_INFO;
+
 	}
 
 	public U2 getBootstrapMethodAttrIndex() {

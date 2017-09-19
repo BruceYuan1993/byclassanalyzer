@@ -8,7 +8,7 @@ public abstract class ClassElement {
     // 表示该元素在class文件byte流中的起始位置
     private long offset;
     // 表示该元素所占byte的长度
-    private int length;
+    private int elementLength;
 
     // getter and setter
     public long getOffset() {
@@ -19,11 +19,11 @@ public abstract class ClassElement {
         this.offset = offset;
     }
 
-    public int getLength() {
-        return length;
+    public int getElementLength() {
+        return elementLength;
     }
 
-    public void setLength(int length) {
-        this.length = length;
+    public void setElementLength(int elementLength) {
+        this.elementLength = elementLength;
     }
 }

@@ -1,12 +1,12 @@
 package com.bruce.byclassanalyzer.constant;
 
-import com.bruce.byclassanalyzer.ClassMember;
+import com.bruce.byclassanalyzer.Element;
 import com.bruce.byclassanalyzer.U2;
 
 public abstract class ConstantMemberRefInfo extends ConstantInfo{
-	@ClassMember(index = 2)
+	@Element(index = 2)
 	protected U2 classIndex;
-	@ClassMember(index = 3)
+	@Element(index = 3)
 	protected U2 nameAndTypeIndex;
 	
 	public U2 getClassIndex() {

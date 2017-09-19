@@ -1,18 +1,16 @@
 package com.bruce.byclassanalyzer;
 
+import com.bruce.byclassanalyzer.attribute.*;
 import com.bruce.byclassanalyzer.constant.*;
-import com.sun.org.apache.bcel.internal.classfile.ConstantUtf8;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,13 +22,12 @@ public class App
     public static List<Class> basicTypes =new ArrayList<>();
     public static ClassDataProvider provider;
     public static final int MAGIC_NUMBER = 0xCAFEBABE;
+    private static List<ConstantInfo> constantPool= null;
     public static void main( String[] args ) throws Exception {
         basicTypes.add(U1.class);
         basicTypes.add(U2.class);
         basicTypes.add(U4.class);
         basicTypes.add(U8.class);
-        basicTypes.add(Table.class);
-        basicTypes.add(byte[].class);
 
         byte[] result = null;
         try (FileChannel fc = new FileInputStream("/home/bruceyuan/ClassFileTest.class").getChannel()){
@@ -53,72 +50,111 @@ public class App
         }
         System.out.print(magic.toHexString());
         ClassFile o = (ClassFile)parseChild(ClassFile.class);
-        for (ConstantInfo con: o.constantPool.getItems()
-             ) {
-            if (con.getClass() == ConstantUtf8Info.class){
-                ConstantUtf8
+        for (ConstantInfo con: o.constantPool) {
+            if (con!= null && con.getClass() == ConstantUtf8Info.class){
                 System.out.println(con);
             }
         }
+        System.out.println("--"+ (ConstantUtf8Info)constantPool.get(64));
+       ;
 
     }
 
-    public static Object parseChild(Class<? extends ClassElement> c) throws Exception {
-        ClassElement result = c.newInstance();
-        result.setOffset(provider.getPosition());
-        Object[] fields = getDeclaredField(c).stream().
-                filter(x -> x.isAnnotationPresent(ClassMember.class)).
-                sorted((x,y) -> x.getAnnotation(ClassMember.class).index() -
-                        y.getAnnotation(ClassMember.class).index()
-                ).toArray();
+    public static Object parseChild(Class<? extends ClassElement> cls) throws Exception {
+        ClassElement result;
+        long offset = provider.getPosition();
+        if (basicTypes.contains(cls))
+        {
+            result = readUInt(cls);
+        } else {
+            result = cls.newInstance();
 
-        UBase lastCount = null;
-        for (Object a : fields){
-            Field f = (Field) a;
-            f.setAccessible(true);
-            if (basicTypes.contains(f.getType())){
-                UBase x = null;
-                long offset = provider.getPosition();
-                if (f.getType() == U1.class){
-                    x = provider.readU1();
-                }else if (f.getType() == U2.class){
-                    x = provider.readU2();
-                }else if (f.getType() == U4.class){
-                    x = provider.readU4();
-                }else if (f.getType() == U8.class){
-                    x = provider.readU8();
-                }else if (f.getType() == Table.class){
-                    Class genericType = (Class) ((ParameterizedType)f.getGenericType()).
-                            getActualTypeArguments()[0];
-                    Table table = new Table<>();
-                    List list = new ArrayList<>();
-                    for (int i = 1; i < lastCount.getValue(); i++){
-                        U1 tag = provider.readU1(true);
-                        Class actualtype = getConstantInfo(tag);
-                        list.add(parseChild((Class<? extends ClassElement>)actualtype));
+            Object[] fields = getDeclaredField(cls).stream().
+                    filter(x -> x.isAnnotationPresent(Element.class)).
+                    sorted((x,y) -> x.getAnnotation(Element.class).index() -
+                            y.getAnnotation(Element.class).index()
+                    ).toArray();
 
-                        if (actualtype == ConstantDoubleInfo.class || actualtype == ConstantLongInfo.class){
-                            i++;
-                        }
-                        System.out.println(i);
+            Object lastResult = null;
+
+            for (Object o : fields){
+                Object value = null;
+                Field field = (Field) o;
+                field.setAccessible(true);
+                Class<?> fieldType= field.getType();
+                if (fieldType == byte[].class){
+                    if (lastResult != null && UBase.class.isInstance(lastResult)){
+                        UBase count = (UBase) lastResult;
+                        value = provider.readBytes((int)count.getValue());
                     }
-                    table.setItems(list);
-                    f.set(result, table);
-                    continue;
-                } else if (f.getType() == byte[].class) {
-                    f.set(result, provider.readBytes((int)lastCount.getValue()));
-                    continue;
+                }else if (fieldType == List.class) {
+                    Class genericType = (Class) ((ParameterizedType)field.getGenericType()).
+                            getActualTypeArguments()[0];
+                    if (lastResult != null && UBase.class.isInstance(lastResult)){
+                        UBase count = (UBase) lastResult;
+                        List list = parseTable(genericType, count);
+                        value = list;
+                    }
+                } else {
+                    value = parseChild((Class<? extends ClassElement>)fieldType);
                 }
-                long length = provider.getPosition() - offset;
-                x.setOffset((int)offset);
-                x.setLength((int)length);
-                lastCount = x;
-                f.set(result, x);
-            } else {
-                f.set(result, parseChild((Class<? extends ClassElement>)f.getType()));
+                lastResult = value;
+                field.set(result, value);
             }
         }
-        result.setLength((int)(provider.getPosition() - result.getOffset()));
+        result.setOffset(offset);
+        result.setElementLength((int)(provider.getPosition() - result.getOffset()));
+        return result;
+    }
+
+    private static List parseTable(Class genericType, UBase count) throws Exception {
+        List list = new ArrayList<>();
+        int index = 0;
+        if (genericType == ConstantInfo.class){
+            index = 1;
+            list.add(null);
+            constantPool = list;
+        }
+        for (; index < count.getValue(); index++){
+            Class actualtype = null;
+            if (genericType == ConstantInfo.class)
+            {
+                U1 tag = provider.readU1(true);
+                actualtype = getConstantInfo(tag);
+            }
+            else if (genericType == Attribute.class){
+                U2 type = provider.readU2(true);
+                actualtype = getAttributeInfo(type);
+            }
+            else
+            {
+                actualtype = genericType;
+            }
+            System.out.println(actualtype);
+            list.add(parseChild((Class<? extends ClassElement>)actualtype));
+
+            if (actualtype == ConstantDoubleInfo.class
+                    || actualtype == ConstantLongInfo.class){
+                index++;
+                list.add(null);
+            }
+        }
+        return list;
+    }
+
+    public static UBase readUInt(Class<?> c){
+        UBase result = null;
+        if (c == U1.class){
+            result = provider.readU1();
+        }else if (c == U2.class){
+            result = provider.readU2();
+        }else if (c == U4.class){
+            result = provider.readU4();
+        }else if (c == U8.class){
+            result = provider.readU8();
+        }else {
+
+        }
         return result;
     }
 
@@ -188,5 +224,38 @@ public class App
         }
         return result;
     }
+
+    private static Class<? extends  Attribute> getAttributeInfo(U2 type){
+        Class<? extends  Attribute> result = null;
+        switch (readStringFromConstantPool(type)) {
+            case Attribute.CONSTANTVALUE:
+                result = ConstantValueAttribute.class;
+                break;
+            case Attribute.CODE:
+                result = CodeAttribute.class;
+                break;
+            case Attribute.LINENUMBERTABLE:
+                result = LineNumberTableAttribute.class;
+                break;
+            case Attribute.LOCALVARIABLETABLE:
+                result = LocalVariableTableAttribute.class;
+                break;
+            case Attribute.EXCEPTIONS:
+                result = ExceptionsAttribute.class;
+                break;
+            case Attribute.SOURCEFILE:
+                result = SourceFileAttribute.class;
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    private static String readStringFromConstantPool(U2 index){
+        ConstantUtf8Info val = (ConstantUtf8Info)constantPool.get((int)index.getValue());
+        return val.toString();
+    }
+
 
 }

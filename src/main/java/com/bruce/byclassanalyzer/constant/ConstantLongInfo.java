@@ -1,10 +1,10 @@
 package com.bruce.byclassanalyzer.constant;
 
-import com.bruce.byclassanalyzer.ClassMember;
+import com.bruce.byclassanalyzer.Element;
 import com.bruce.byclassanalyzer.U8;
 
 public class ConstantLongInfo extends ConstantInfo{
-	@ClassMember(index = 2)
+	@Element(index = 2)
 	private U8 data;
 
 	public ConstantLongInfo(U8 data) {

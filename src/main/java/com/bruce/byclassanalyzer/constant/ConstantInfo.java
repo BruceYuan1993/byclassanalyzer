@@ -1,7 +1,7 @@
 package com.bruce.byclassanalyzer.constant;
 
 import com.bruce.byclassanalyzer.ClassElement;
-import com.bruce.byclassanalyzer.ClassMember;
+import com.bruce.byclassanalyzer.Element;
 import com.bruce.byclassanalyzer.U1;
 
 public abstract class ConstantInfo extends ClassElement{
@@ -30,7 +30,7 @@ public abstract class ConstantInfo extends ClassElement{
     public static final int ACC_ANNOTATION = 0x2000;
     public static final int ACC_ENUM = 0x4000;
 
-    @ClassMember(index = 1)
+    @Element(index = 1)
     protected U1 tag;
 
     public U1 getTag() {

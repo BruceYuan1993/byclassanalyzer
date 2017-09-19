@@ -3,13 +3,13 @@ package com.bruce.byclassanalyzer.constant;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
-import com.bruce.byclassanalyzer.ClassMember;
+import com.bruce.byclassanalyzer.Element;
 import com.bruce.byclassanalyzer.U2;
 
 public class ConstantUtf8Info extends ConstantInfo{
-	@ClassMember(index = 2)
+	@Element(index = 2)
 	private U2 length;
-	@ClassMember(index = 3)
+	@Element(index = 3)
 	private byte[] data;
 	private String value;
 

@@ -1,6 +1,9 @@
 package com.bruce.byclassanalyzer;
 
+import com.bruce.byclassanalyzer.attribute.Attribute;
 import com.bruce.byclassanalyzer.constant.ConstantInfo;
+
+import java.util.List;
 
 /**
  * Created by bruceyuan on 17-8-15.
@@ -26,13 +29,46 @@ public class ClassFile extends ClassElement{
             attribute_info attributes[attributes_count];
         }
     */
-    @ClassMember(index = 1)
+    @Element(index = 1)
     private ClassVersion version;
 
-    @ClassMember(index = 2)
+    @Element(index = 2)
     private U2 cpCount;
 
-    @ClassMember(index = 3)
-    public Table<ConstantInfo> constantPool;
+    @Element(index = 3)
+    public List<ConstantInfo> constantPool;
+
+    @Element(index = 4)
+    private U2 accessFlags;
+
+    @Element(index = 5)
+    private U2 thisClass;
+
+    @Element(index = 6)
+    private U2 superClass;
+
+    @Element(index = 7)
+    private U2 interfacesCount;
+
+    @Element(index = 8)
+    private List<U2> interfaces;
+
+    @Element(index = 9)
+    private U2 fieldsCount;
+
+    @Element(index = 10)
+    private List<ClassMember> fields;
+
+    @Element(index = 11)
+    private U2 methodsCount;
+
+    @Element(index = 12)
+    private List<ClassMember> methods;
+
+    @Element(index = 13)
+    private U2 attributesCount;
+
+//    @Element(index = 14)
+//    private List<Attribute> attributes;
 
 }

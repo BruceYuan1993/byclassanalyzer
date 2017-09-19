@@ -1,10 +1,10 @@
 package com.bruce.byclassanalyzer.constant;
 
-import com.bruce.byclassanalyzer.ClassMember;
+import com.bruce.byclassanalyzer.Element;
 import com.bruce.byclassanalyzer.U2;
 
 public class ConstantMethodTypeInfo extends ConstantInfo{
-	@ClassMember(index = 2)
+	@Element(index = 2)
 	private U2 descriptorIndex;
 	
 	public ConstantMethodTypeInfo(U2 nameIndex, U2 descriptorIndex) {

@@ -18,7 +18,7 @@ public abstract class ClassDataProvider {
 	}
 
     U1 readU1() {
-        return new U1(readBytes(1, false));
+        return readU1(false);
     }
 
 	U1 readU1(boolean peek) {
@@ -26,7 +26,7 @@ public abstract class ClassDataProvider {
 	}
 
     U2 readU2() {
-        return new U2(readBytes(2, false));
+        return readU2(false);
     }
 
 	U2 readU2(boolean peek) {
@@ -34,7 +34,7 @@ public abstract class ClassDataProvider {
 	}
 
     U4 readU4() {
-        return new U4(readBytes(4, false));
+        return readU4(false);
     }
 
 	U4 readU4(boolean peek) {
@@ -42,7 +42,7 @@ public abstract class ClassDataProvider {
 	}
 
     U8 readU8() {
-        return new U8(readBytes(8, false));
+        return readU8(false);
     }
 
 	U8 readU8(boolean peek) {

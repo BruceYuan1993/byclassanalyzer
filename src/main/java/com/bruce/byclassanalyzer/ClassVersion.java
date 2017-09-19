@@ -5,10 +5,10 @@ package com.bruce.byclassanalyzer;
  */
 public class ClassVersion extends ClassElement{
 
-    @ClassMember(index = 1)
+    @Element(index = 1)
     private U2 minorVersion;
 
-    @ClassMember(index = 2)
+    @Element(index = 2)
     private U2 majorVersion;
 
     public ClassVersion() {

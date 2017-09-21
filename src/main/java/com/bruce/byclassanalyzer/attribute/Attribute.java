@@ -12,6 +12,11 @@ public class Attribute extends ClassElement{
 	public static final String LOCALVARIABLETABLE = "LocalVariableTable";
 	public static final String EXCEPTIONS = "Exceptions";
 	public static final String SOURCEFILE = "SourceFile";
+    public static final String InnerClasses = "InnerClasses";
+    public static final String Deprecated = "Deprecated";
+    public static final String Synthetic = "Synthetic";
+    public static final String StackMapTable = "StackMapTable";
+    public static final String Signature = "Signature";
 
 	@Element(index = 1)
 	protected U2 attributeNameIndex;

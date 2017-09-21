@@ -68,7 +68,7 @@ public class ClassFile extends ClassElement{
     @Element(index = 13)
     private U2 attributesCount;
 
-//    @Element(index = 14)
-//    private List<Attribute> attributes;
+    @Element(index = 14)
+    private List<Attribute> attributes;
 
 }

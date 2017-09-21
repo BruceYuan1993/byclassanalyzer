@@ -246,6 +246,9 @@ public class App
             case Attribute.SOURCEFILE:
                 result = SourceFileAttribute.class;
                 break;
+            case Attribute.InnerClasses:
+                result = InnerClassesAttribute.class;
+                break;
             default:
                 break;
         }
